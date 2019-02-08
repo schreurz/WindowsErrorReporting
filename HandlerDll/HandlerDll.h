@@ -10,13 +10,37 @@
 #define HANDLERDLL_API __declspec(dllimport)
 #endif
 
-// This class is exported from the dll
-class HANDLERDLL_API CHandlerDll {
-public:
-	CHandlerDll(void);
-	// TODO: add your methods here.
-};
+#include <crtdbg.h>
+#include <windows.h>
+#include <werapi.h>
 
-extern HANDLERDLL_API int nHandlerDll;
+extern "C" HANDLERDLL_API HRESULT WINAPI
+OutOfProcessExceptionEventCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __out   */ BOOL *pbOwnershipClaimed,
+	/* __out   */ PWSTR pwszEventName,
+	/* __inout */ PDWORD pchSize,
+	/* __out   */ PDWORD pdwSignatureCount
+);
 
-HANDLERDLL_API int fnHandlerDll(void);
+extern "C" HANDLERDLL_API HRESULT WINAPI
+OutOfProcessExceptionEventSignatureCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __in    */ DWORD dwIndex,
+	/* __out   */ PWSTR pwszName,
+	/* __inout */ PDWORD pchName,
+	/* __out   */ PWSTR pwszValue,
+	/* __inout */ PDWORD pchValue
+);
+
+extern "C" HANDLERDLL_API HRESULT WINAPI
+OutOfProcessExceptionEventDebuggerLaunchCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __out   */ PBOOL pbIsCustomDebugger,
+	/* __out   */ PWSTR pwszDebuggerLaunch,
+	/* __inout */ PDWORD pchDebuggerLaunch,
+	/* __out   */ PBOOL pbIsDebuggerAutolaunch
+);
