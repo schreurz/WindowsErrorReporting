@@ -1,14 +1,10 @@
-// HandlerDll.cpp : Defines the exported functions for the DLL application.
-//
-
-#include "stdafx.h"
-#include "HandlerDll.h"
-
 #include <stdlib.h>
+
+#include "CrashExeHandler.h"
 
 #define UNREACHABLE_CODE() _ASSERT(FALSE)
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
+extern "C" CRASHEXEHANDLER_API HRESULT WINAPI
 OutOfProcessExceptionEventCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
@@ -47,8 +43,6 @@ Return Value:
 	PCWSTR EventName = L"MySampleEventName";
 	DWORD EventNameLength;
 
-	system("dxdiag /x dxdiag.xml");
-
 	UNREFERENCED_PARAMETER(pContext);
 
 
@@ -84,7 +78,7 @@ Return Value:
 	return S_OK;
 }
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
+extern "C" CRASHEXEHANDLER_API HRESULT WINAPI
 OutOfProcessExceptionEventSignatureCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
@@ -118,8 +112,6 @@ Return Value:
 
 {
 	UNREFERENCED_PARAMETER(pContext);
-
-	system("dxdiag /x dxdiag.xml");
 
 	//
 	// Some sanity checks. Our handler only specifies 2 signature pairs.
@@ -172,7 +164,7 @@ Return Value:
 	return S_OK;
 }
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
+extern "C" CRASHEXEHANDLER_API HRESULT WINAPI
 OutOfProcessExceptionEventDebuggerLaunchCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
@@ -209,8 +201,6 @@ Return Value:
 {
 	UNREFERENCED_PARAMETER(pContext);
 
-	system("dxdiag /x dxdiag.xml");
-
 	//
 	// Some sanity checks.
 	//
@@ -224,4 +214,22 @@ Return Value:
 	*pbIsCustomDebugger = FALSE;
 
 	return S_OK;
+}
+
+
+BOOL APIENTRY DllMain(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
+{
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH:
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+		break;
+	}
+
+	return TRUE;
 }

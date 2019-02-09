@@ -10,21 +10,12 @@
 #define UNREACHABLE_CODE() _ASSERT(FALSE)
 
 int
-wmain(
-	int argc,
-	const wchar_t* argv[],
-	const wchar_t* envp[]
-)
+main()
 {
 	HRESULT hr = E_FAIL;
 	DWORD rc;
 	WCHAR ModulePath[MAX_PATH];
 	size_t i;
-
-
-	UNREFERENCED_PARAMETER(argc);
-	UNREFERENCED_PARAMETER(argv);
-	UNREFERENCED_PARAMETER(envp);
 
 
 	//
@@ -49,7 +40,7 @@ wmain(
 
 	for (i = wcslen(ModulePath); i >= 0; --i) {
 		if (ModulePath[i] == L'\\') {
-			if (0 != wcscpy_s(&ModulePath[i + 1], MAX_PATH - i - 1, L"HandlerDll.dll")) {
+			if (0 != wcscpy_s(&ModulePath[i + 1], MAX_PATH - i - 1, L"CrashExeHandler.dll")) {
 				return 1;
 			}
 
@@ -85,11 +76,9 @@ wmain(
 
 	RaiseException(0xABCD1234, EXCEPTION_NONCONTINUABLE, 0, NULL);
 
-
 	UNREACHABLE_CODE();
 
 	hr = S_OK;
-
 
 End:
 
