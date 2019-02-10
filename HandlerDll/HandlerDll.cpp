@@ -8,16 +8,6 @@
 
 #define UNREACHABLE_CODE() _ASSERT(FALSE)
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
-OutOfProcessExceptionEventCallback(
-	/* __in    */ PVOID pContext,
-	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
-	/* __out   */ BOOL *pbOwnershipClaimed,
-	/* __out   */ PWSTR pwszEventName,
-	/* __inout */ PDWORD pchSize,
-	/* __out   */ PDWORD pdwSignatureCount
-)
-
 /*++
 Routine Description:
 	WER calls this function to determine whether the exception handler is claiming the crash.
@@ -42,12 +32,17 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-
+HRESULT OutOfProcessExceptionEventCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __out   */ BOOL *pbOwnershipClaimed,
+	/* __out   */ PWSTR pwszEventName,
+	/* __inout */ PDWORD pchSize,
+	/* __out   */ PDWORD pdwSignatureCount
+)
 {
 	PCWSTR EventName = L"MySampleEventName";
 	DWORD EventNameLength;
-
-	system("dxdiag /x dxdiag.xml");
 
 	UNREFERENCED_PARAMETER(pContext);
 
@@ -84,17 +79,6 @@ Return Value:
 	return S_OK;
 }
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
-OutOfProcessExceptionEventSignatureCallback(
-	/* __in    */ PVOID pContext,
-	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
-	/* __in    */ DWORD dwIndex,
-	/* __out   */ PWSTR pwszName,
-	/* __inout */ PDWORD pchName,
-	/* __out   */ PWSTR pwszValue,
-	/* __inout */ PDWORD pchValue
-)
-
 /*++
 Routine Description:
 	WER can call this function multiple times to get the report parameters that uniquely describe the
@@ -115,11 +99,17 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-
+HRESULT OutOfProcessExceptionEventSignatureCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __in    */ DWORD dwIndex,
+	/* __out   */ PWSTR pwszName,
+	/* __inout */ PDWORD pchName,
+	/* __out   */ PWSTR pwszValue,
+	/* __inout */ PDWORD pchValue
+)
 {
 	UNREFERENCED_PARAMETER(pContext);
-
-	system("dxdiag /x dxdiag.xml");
 
 	//
 	// Some sanity checks. Our handler only specifies 2 signature pairs.
@@ -172,16 +162,6 @@ Return Value:
 	return S_OK;
 }
 
-extern "C" HANDLERDLL_API HRESULT WINAPI
-OutOfProcessExceptionEventDebuggerLaunchCallback(
-	/* __in    */ PVOID pContext,
-	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
-	/* __out   */ PBOOL pbIsCustomDebugger,
-	/* __out   */ PWSTR pwszDebuggerLaunch,
-	/* __inout */ PDWORD pchDebuggerLaunch,
-	/* __out   */ PBOOL pbIsDebuggerAutolaunch
-)
-
 /*++
 Routine Description:
 	WER calls this function to let you customize the debugger launch options and launch string.
@@ -205,11 +185,16 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-
+HRESULT OutOfProcessExceptionEventDebuggerLaunchCallback(
+	/* __in    */ PVOID pContext,
+	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
+	/* __out   */ PBOOL pbIsCustomDebugger,
+	/* __out   */ PWSTR pwszDebuggerLaunch,
+	/* __inout */ PDWORD pchDebuggerLaunch,
+	/* __out   */ PBOOL pbIsDebuggerAutolaunch
+)
 {
 	UNREFERENCED_PARAMETER(pContext);
-
-	system("dxdiag /x dxdiag.xml");
 
 	//
 	// Some sanity checks.
