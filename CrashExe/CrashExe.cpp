@@ -7,11 +7,16 @@
 #include <windows.h>
 #include <werapi.h>
 
+#include "Logging.h"
+Logging::Logger logger = Logging::Logger("C:\\Users\\CSE498\\Desktop");
+
 #define UNREACHABLE_CODE() _ASSERT(FALSE)
 
 int
 main()
 {
+	logger.WriteLog("In main()");
+
 	HRESULT hr = E_FAIL;
 	DWORD rc;
 	WCHAR ModulePath[MAX_PATH];
@@ -40,7 +45,7 @@ main()
 
 	for (i = wcslen(ModulePath); i >= 0; --i) {
 		if (ModulePath[i] == L'\\') {
-			if (0 != wcscpy_s(&ModulePath[i + 1], MAX_PATH - i - 1, L"CrashExeHandler.dll")) {
+			if (0 != wcscpy_s(&ModulePath[i + 1], MAX_PATH - i - 1, L"HANDLERDLL.dll")) {
 				return 1;
 			}
 

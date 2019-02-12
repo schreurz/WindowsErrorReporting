@@ -13,8 +13,9 @@
 #include <crtdbg.h>
 #include <windows.h>
 #include <werapi.h>
+#include <Logging.h>
 
-extern "C" HANDLERDLL_API HRESULT
+extern "C" HANDLERDLL_API HRESULT WINAPI
 OutOfProcessExceptionEventCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
@@ -24,7 +25,7 @@ OutOfProcessExceptionEventCallback(
 	/* __out   */ PDWORD pdwSignatureCount
 );
 
-extern "C" HANDLERDLL_API HRESULT
+extern "C" HANDLERDLL_API HRESULT WINAPI
 OutOfProcessExceptionEventSignatureCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
@@ -35,7 +36,7 @@ OutOfProcessExceptionEventSignatureCallback(
 	/* __inout */ PDWORD pchValue
 );
 
-extern "C" HANDLERDLL_API HRESULT
+extern "C" HANDLERDLL_API HRESULT WINAPI
 OutOfProcessExceptionEventDebuggerLaunchCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,

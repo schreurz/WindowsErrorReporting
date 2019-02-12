@@ -6,7 +6,11 @@
 
 #include <stdlib.h>
 
+#include <iostream>
+
 #define UNREACHABLE_CODE() _ASSERT(FALSE)
+
+Logging::Logger logger = Logging::Logger("C:\\Users\\CSE498\\Desktop");
 
 /*++
 Routine Description:
@@ -32,7 +36,7 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-HRESULT OutOfProcessExceptionEventCallback(
+HRESULT WINAPI OutOfProcessExceptionEventCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
 	/* __out   */ BOOL *pbOwnershipClaimed,
@@ -41,11 +45,12 @@ HRESULT OutOfProcessExceptionEventCallback(
 	/* __out   */ PDWORD pdwSignatureCount
 )
 {
+	logger.WriteLog("In OutOfProcessExceptionEventCallback");
+
 	PCWSTR EventName = L"MySampleEventName";
 	DWORD EventNameLength;
 
 	UNREFERENCED_PARAMETER(pContext);
-
 
 	//
 	// Bail out if it is not an exception we want to handle.
@@ -99,7 +104,7 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-HRESULT OutOfProcessExceptionEventSignatureCallback(
+HRESULT WINAPI OutOfProcessExceptionEventSignatureCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
 	/* __in    */ DWORD dwIndex,
@@ -109,6 +114,8 @@ HRESULT OutOfProcessExceptionEventSignatureCallback(
 	/* __inout */ PDWORD pchValue
 )
 {
+	logger.WriteLog("In OutOfProcessExceptionEventSignatureCallback");
+
 	UNREFERENCED_PARAMETER(pContext);
 
 	//
@@ -185,7 +192,7 @@ Arguments:
 Return Value:
 	HRESULT.
 --*/
-HRESULT OutOfProcessExceptionEventDebuggerLaunchCallback(
+HRESULT WINAPI OutOfProcessExceptionEventDebuggerLaunchCallback(
 	/* __in    */ PVOID pContext,
 	/* __in    */ const PWER_RUNTIME_EXCEPTION_INFORMATION pExceptionInformation,
 	/* __out   */ PBOOL pbIsCustomDebugger,
@@ -194,6 +201,8 @@ HRESULT OutOfProcessExceptionEventDebuggerLaunchCallback(
 	/* __out   */ PBOOL pbIsDebuggerAutolaunch
 )
 {
+	logger.WriteLog("In OutOfProcessExceptionEventDebuggerLaunchCallback");
+
 	UNREFERENCED_PARAMETER(pContext);
 
 	//
